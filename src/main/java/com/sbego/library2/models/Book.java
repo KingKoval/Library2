@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "book")
 public class Book {
@@ -32,6 +34,13 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "person_id", referencedColumnName = "person_id")
     private Person person;
+
+    @Column(name = "time_of_reservation")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeOfReservation;
+
+    @Transient
+    private boolean expired;
 
     public Book() {
     }
@@ -82,6 +91,22 @@ public class Book {
         this.person = person;
     }
 
+    public Date getTimeOfReservation() {
+        return timeOfReservation;
+    }
+
+    public void setTimeOfReservation(Date timeOfReservation) {
+        this.timeOfReservation = timeOfReservation;
+    }
+
+    public boolean isExpired() {
+        return expired;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
+    }
+
     @Override
     public String toString() {
         return "Book{" +
@@ -90,6 +115,7 @@ public class Book {
                 ", author='" + author + '\'' +
                 ", year=" + year +
                 ", person=" + person +
+                ", timeOfReservation=" + timeOfReservation +
                 '}';
     }
 }
