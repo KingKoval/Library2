@@ -4,7 +4,6 @@ import com.sbego.library2.models.Book;
 import com.sbego.library2.models.Person;
 import com.sbego.library2.repositories.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -69,6 +68,10 @@ public class BooksService {
     @Transactional
     public void returnBook(int id) {
         booksRepository.findById(id).get().setPerson(null);
+    }
+
+    public List<Book> searchBook(String query) {
+        return booksRepository.findByTitleStartingWith(query);
     }
 
 }
