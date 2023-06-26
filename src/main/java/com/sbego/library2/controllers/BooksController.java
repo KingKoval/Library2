@@ -106,4 +106,18 @@ public class BooksController {
 
         return "redirect:/books";
     }
+
+    @GetMapping("/search")
+    public String search() {
+        return "books/search";
+    }
+
+    @PostMapping("/search")
+    public String searchBook(Model model, @RequestParam("query") String query) {
+        for(Book book : booksService.searchBook(query))
+            System.out.println(book.getTitle());
+        model.addAttribute("books", booksService.searchBook(query));
+
+        return "books/search";
+    }
 }
