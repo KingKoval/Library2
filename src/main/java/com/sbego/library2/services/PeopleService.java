@@ -1,17 +1,22 @@
 package com.sbego.library2.services;
 
+import com.sbego.library2.models.Book;
 import com.sbego.library2.models.Person;
 import com.sbego.library2.repositories.PeopleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 public class PeopleService{
+
+    private final long MILLISECONDS_OF_10DAYS = 864000;
 
     private final PeopleRepository peopleRepository;
 
@@ -27,9 +32,25 @@ public class PeopleService{
     public Person findOne(int id) {
         Optional<Person> person = peopleRepository.findById(id);
 
-        System.out.println(person.get().toString());
-
         return person.orElse(null);
+    }
+
+    public List<Book> getBooksByPerson(int id) {
+        Optional<Person> person = peopleRepository.findById(id);
+
+        if(person.isPresent()){
+            person.get().getBooks().forEach(book -> {
+                if(book.getTimeOfReservation() != null) {
+                    long difference = new Date().getTime() - book.getTimeOfReservation().getTime();
+
+                    if(difference > MILLISECONDS_OF_10DAYS){
+                        book.setExpired(true);
+                    }
+                }
+            });
+        }
+
+        return person.get().getBooks();
     }
 
     @Transactional
