@@ -30,7 +30,7 @@ public class PeopleController {
         Person person = peopleService.findOne(id);
 
         model.addAttribute("person", person);
-        model.addAttribute("books", person.getBooks());
+        model.addAttribute("books", peopleService.getBooksByPerson(id));
 
         return "people/show";
     }
