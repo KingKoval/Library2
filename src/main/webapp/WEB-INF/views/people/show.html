@@ -15,8 +15,13 @@
 
     <hr th:if="${!books.isEmpty()}"/>
     <h4 th:if="${!books.isEmpty()}">Books:</h4>
-    <div th:if="${!books.isEmpty()}" th:each="book : ${books}"
-         th:text="${book.getTitle()} + ', '+ ${book.getAuthor()} + ', ' + ${book.getYear()}"></div>
+    <div th:if="${!books.isEmpty()}" th:each="book : ${books}">
+
+        <p th:if="${book.isExpired()}" style="color: red" th:text="${book.getTitle()} + ', '+ ${book.getAuthor()} + ', ' + ${book.getYear()}"></p>
+
+        <p th:if="${!book.isExpired()}" th:text="${book.getTitle()} + ', '+ ${book.getAuthor()} + ', ' + ${book.getYear()}"></p>
+
+    </div>
 
     <br/>
     <hr/>
